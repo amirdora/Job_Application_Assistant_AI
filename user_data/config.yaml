@@ -1,0 +1,11 @@
+job_preferences:
+  career_level: []
+  employment_type:
+  - FULL_TIME.ef2fe9
+  job_title: ios
+  location: Frankfurt
+  radius: 50
+  remote_option:
+  - FULL_REMOTE.050e26
+logging:
+  log_file: application_log.txt

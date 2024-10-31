@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xing Job Application AI Assist</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .center-content { display: flex; justify-content: center; }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h1 class="text-center text-secondary mb-4">Xing Job Application AI Assist</h1>
+
+        <!-- Start/Stop Application Buttons -->
+        <div class="d-flex justify-content-center mb-4">
+            {% if not logged_in %}
+                <button class="btn btn-primary me-2" onclick="window.location.href='/login'">Login to Xing</button>
+            {% endif %}
+            <button id="toggleButton" class="btn btn-success me-2" 
+                    onclick="toggleApplication()" 
+                    {% if not logged_in %} disabled {% endif %}>
+                Start Job Application
+            </button>
+        </div>
+
+        <!-- Job Search Preferences Form -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title text-center text-secondary">Job Search Preferences</h2>
+                <form id="preferencesForm" action="/save_preferences" method="post" class="mt-3">
+                    <div class="mb-3">
+                        <label for="job_title" class="form-label">Job Title:</label>
+                        <input type="text" id="job_title" name="job_title" class="form-control" value="{{ preferences.job_title }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="location" class="form-label">Location:</label>
+                        <input type="text" id="location" name="location" class="form-control" value="{{ preferences.location }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="radius" class="form-label">Radius (km):</label>
+                        <input type="number" id="radius" name="radius" class="form-control" value="{{ preferences.radius }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Remote Option:</label><br>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="remote_option" value="FULL_REMOTE.050e26" {% if "FULL_REMOTE.050e26" in preferences.remote_option %}checked{% endif %}>
+                            <label class="form-check-label">Full Remote</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="remote_option" value="NON_REMOTE.3ca273" {% if "NON_REMOTE.3ca273" in preferences.remote_option %}checked{% endif %}>
+                            <label class="form-check-label">Non-Remote</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Employment Type:</label><br>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="employment_type" value="FULL_TIME.ef2fe9" {% if "FULL_TIME.ef2fe9" in preferences.employment_type %}checked{% endif %}>
+                            <label class="form-check-label">Full Time</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="employment_type" value="PART_TIME.58889d" {% if "PART_TIME.58889d" in preferences.employment_type %}checked{% endif %}>
+                            <label class="form-check-label">Part Time</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="employment_type" value="INTERN.dc571c" {% if "INTERN.dc571c" in preferences.employment_type %}checked{% endif %}>
+                            <label class="form-check-label">Internship</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="employment_type" value="STUDENT.dc571c" {% if "STUDENT.dc571c" in preferences.employment_type %}checked{% endif %}>
+                            <label class="form-check-label">Student</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Career Level:</label><br>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="career_level" value="ENTRY_LEVEL.24d1f6" {% if "ENTRY_LEVEL.24d1f6" in preferences.career_level %}checked{% endif %}>
+                            <label class="form-check-label">Entry Level</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="career_level" value="PROFESSIONAL.2ebf16" {% if "PROFESSIONAL.2ebf16" in preferences.career_level %}checked{% endif %}>
+                            <label class="form-check-label">Professional</label>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary mt-3">Save Preferences</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Application History Table -->
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title text-center text-secondary">Application History</h2>
+                <table class="table table-bordered table-hover mt-3">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Job URL</th>
+                            <th scope="col">Applied At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for app in applications %}
+                        <tr>
+                            <td><a href="{{ app.job_url }}" target="_blank">{{ app.job_url }}</a></td>
+                            <td>{{ app.applied_at }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let applicationRunning = false;
+
+        function toggleApplication() {
+            const toggleButton = document.getElementById('toggleButton');
+            const preferencesForm = document.getElementById('preferencesForm');
+
+            if (!applicationRunning) {
+                // Save preferences and start the application
+                preferencesForm.submit();
+                toggleButton.classList.replace('btn-success', 'btn-danger');
+                toggleButton.textContent = 'Stop Job Application';
+                applicationRunning = true;
+
+                fetch('/apply_jobs');
+            } else {
+                // Stop the application
+                fetch('/stop_application', { method: 'POST' });
+                toggleButton.classList.replace('btn-danger', 'btn-success');
+                toggleButton.textContent = 'Start Job Application';
+                applicationRunning = false;
+            }
+        }
+    </script>
+</body>
+</html>

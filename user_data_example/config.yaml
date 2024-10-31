@@ -1,0 +1,10 @@
+# config.yaml
+
+job_preferences:
+  job_type: "Developer"         # Job title to search for
+  location: "Frankfurt"         # Job location
+  remote: "yes"                 # Options: "yes" for remote, "no" for on-site
+  city_id: "2925533.36f095"     # City ID for Frankfurt, change based on target location
+
+logging:
+  log_file: "application_log.txt"   # Path for log file
