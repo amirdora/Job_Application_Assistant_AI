@@ -138,7 +138,7 @@ def construct_xing_url():
     employment_type = '*'.join(preferences.get("employment_type", []))
     career_level = '*'.join(preferences.get("career_level", []))
 
-    url = f"{base_url}&keywords={keywords}&location={location}&radius={radius}"
+    url = f"{base_url}&keywords={keywords}&location={location}&radius={radius}&sort=date"
     if remote_option:
         url += f"&remoteOption={remote_option}"
     if employment_type:
