@@ -5,11 +5,6 @@ The **Xing Job Application AI Assistant** automates job applications on the Xing
 
 ![alt text](/Readme/screenshot.png)
 
-## Disclaimer
-
-**This AI Assistant is intended for personal use only.** Automating job applications on Xing or any other platform may violate the terms of service of those platforms. **Use this AI Assistant at your own risk.** The developers of this AI Assistant assume no responsibility for any actions taken with it, and users are solely responsible for compliance with Xing’s terms of use and all applicable laws.
-
-
 ## Features
 
 - **Manual Login**: Users log in manually without sharing credentials.
@@ -141,6 +136,10 @@ Example `config.yaml`:
   Review `application_log.txt` to troubleshoot failed applications. Errors are logged with timestamps to assist in debugging.
 
 This setup ensures a secure and reliable experience for automating job applications on Xing. Adjust configuration options as needed and refer to the logs for a complete record of all applied jobs and any encountered issues.
+
+## Disclaimer
+
+**This AI Assistant is intended for personal use only.** Automating job applications on Xing or any other platform may violate the terms of service of those platforms. **Use this AI Assistant at your own risk.** The developers of this AI Assistant assume no responsibility for any actions taken with it, and users are solely responsible for compliance with Xing’s terms of use and all applicable laws.
 
 ---
 
