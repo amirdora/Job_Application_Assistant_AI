@@ -1,8 +1,11 @@
 # platforms/base.py
+
 import os
 import pickle
 from selenium import webdriver
 from abc import ABC, abstractmethod
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
 
 class JobPlatform(ABC):
     platform_name = "undefined"  # Default value
@@ -13,9 +16,17 @@ class JobPlatform(ABC):
         self.applications = []
         self.browser = self.start_browser(headless)
 
-    @abstractmethod
     def start_browser(self, headless=True):
-        pass
+        """Initialize the Chrome WebDriver with options."""
+        options = webdriver.ChromeOptions()
+        if headless:
+            options.headless = True
+        options.add_argument("--window-size=1920,1080")
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option("useAutomationExtension", False)
+
+        service = ChromeService(ChromeDriverManager().install())
+        return webdriver.Chrome(service=service, options=options)
 
     @abstractmethod
     def login(self):

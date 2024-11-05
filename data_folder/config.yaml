@@ -1,0 +1,110 @@
+remote: false
+
+experienceLevel:
+  internship: false
+  entry: true
+  associate: true
+  mid-senior level: true
+  director: false
+  executive: false
+
+jobTypes:
+  full-time: true
+  contract: false
+  part-time: false
+  temporary: true
+  internship: false
+  other: false
+  volunteer: false
+
+date:
+  all time: false
+  month: false
+  week: false
+  24 hours: true
+
+positions:
+  - Full-Stack Developer
+  - Mobile und Web-Entwickler
+  - Frontend Developer
+  - junior Flutter Developer
+  - junior OS Developer
+  - Software Engineer
+  - Android Developer
+  - Angular Developer
+  - React Developer
+  - ASP.NET Developer
+  - junior PHP Developer
+  - JavaScript Developer
+  - Kotlin Developer
+  - TypeScript Developer
+
+
+locations:
+  - Aschaffenburg
+  - Frankfurt
+  - Darmstadt
+
+
+
+
+apply_once_at_company: true
+
+distance: 0
+
+company_blacklist:
+  - wayfair
+  - Crossover
+  - Optimus Search
+  - 9am
+  - THRYVE
+
+
+
+title_blacklist:
+  - Data
+  - SAP
+  - Sales
+  - Marketing
+  - Backend
+  - Enterprise
+  - Architect
+  - Requirements
+  - Unity
+  - DevOps
+  - Azure
+  - Cloud
+  - AWS
+  - Consultant
+  - Sharepoint
+  - Go
+  - COBOL
+  - Machine
+  - ABAP
+  - Statistica
+  - Vertriebs
+  - Kunden
+  - BI
+  - ETL
+  - Business Intelligence
+  - Tableau
+  - Snowflake
+  - Hadoop
+  - Spark
+  - Kafka
+  - HR
+  - Recruiter
+  - German
+  - Deutsch
+  - Business
+  - Security
+  - Mechatronik
+  - Research
+
+job_applicants_threshold:
+  min_applicants: 0
+  max_applicants: 50
+
+llm_model_type: openai
+llm_model: 'gpt-4o-mini'
+# llm_api_url: 'https://api.pawan.krd/cosmosrp/v1'
