@@ -1,2 +1,6 @@
 application_log.txt
 cookies.pkl
+chrome_user_data_stepstone/*
+data_folder/secrets.yaml
+data_folder/plain_text_resume.yaml
+cookies/*
