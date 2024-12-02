@@ -93,7 +93,7 @@ Example `config.yaml`:
 
    With the virtual environment activated, run the main script:
    ```bash
-   python assist.py
+   python app.py
    ```
 
 2. **Login**:
