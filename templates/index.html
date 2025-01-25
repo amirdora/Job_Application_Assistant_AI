@@ -2,152 +2,61 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Job Application AI Assist</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .center-content { display: flex; justify-content: center; }
-        .platform-logo {
-            width: 24px;
-            height: 24px;
-            margin-right: 8px;
-        }
-        .btn-platform {
-            display: flex;
-            align-items: center;
-        }
-    </style>
 </head>
 <body class="bg-light">
-    <div class="container mt-5">
-
-        <!-- Header -->
-        <h1 class="text-center text-secondary mb-4">Job Application AI Assist</h1>
-
-        <!-- Platform Buttons -->
-        <div class="d-flex justify-content-center mb-4">
-            {% for platform in platforms %}
-                <div class="me-3">
-                    {% if not logged_in[platform] %}
-                        <button class="btn btn-primary btn-platform" onclick="window.location.href='/login/{{ platform }}'">
-                            <img src="/static/images/{{ platform }}.png" alt="{{ platform }}" class="platform-logo">
-                            Login to {{ platform.capitalize() }}
-                        </button>
-                    {% endif %}
-                    <button id="start{{ platform.capitalize() }}Button" class="btn btn-success btn-platform mt-2"
-                            onclick="startApplication('{{ platform }}')"
-                            {% if not logged_in[platform] %} disabled {% endif %}>
-                        <img src="/static/images/{{ platform }}.png" alt="{{ platform }}" class="platform-logo">
-                        Start {{ platform.capitalize() }} Application
-                    </button>
-                </div>
-            {% endfor %}
-        </div>
-
-        <!-- Job Search Preferences Form -->
-        <div class="card mb-4">
-            <div class="card-body">
-                <h2 class="card-title text-center text-secondary">Job Search Preferences</h2>
-                <form id="preferencesForm" action="/save_preferences" method="post" class="mt-3">
-                    <div class="mb-3">
-                        <label for="job_title" class="form-label">Job Title:</label>
-                        <input type="text" id="job_title" name="job_title" class="form-control" value="{{ preferences.job_title }}">
-                    </div>
-                    <div class="mb-3">
-                        <label for="location" class="form-label">Location:</label>
-                        <input type="text" id="location" name="location" class="form-control" value="{{ preferences.location }}">
-                    </div>
-                    <div class="mb-3">
-                        <label for="radius" class="form-label">Radius (km):</label>
-                        <input type="number" id="radius" name="radius" class="form-control" value="{{ preferences.radius }}">
-                    </div>
-
-                    <!-- Platform-Specific Preferences -->
-                    {% for platform in platforms %}
-                        <div class="mb-3">
-                            <h5>{{ platform.capitalize() }} Preferences:</h5>
-                            {% if platform == 'xing' %}
-                                <!-- Xing-specific preferences -->
-                                <!-- Remote Option -->
-                                <label class="form-label">Remote Option:</label><br>
-                                <div class="form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" name="xing_remote_option" value="FULL_REMOTE.050e26"
-                                           {% if "FULL_REMOTE.050e26" in preferences.xing_remote_option %}checked{% endif %}>
-                                    <label class="form-check-label">Full Remote</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" name="xing_remote_option" value="NON_REMOTE.3ca273"
-                                           {% if "NON_REMOTE.3ca273" in preferences.xing_remote_option %}checked{% endif %}>
-                                    <label class="form-check-label">Non-Remote</label>
-                                </div>
-
-                                <!-- Employment Type -->
-                                <label class="form-label mt-2">Employment Type:</label><br>
-                                <div class="form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" name="xing_employment_type" value="FULL_TIME.ef2fe9"
-                                           {% if "FULL_TIME.ef2fe9" in preferences.xing_employment_type %}checked{% endif %}>
-                                    <label class="form-check-label">Full Time</label>
-                                </div>
-                                <!-- Add other employment types as needed -->
-
-                                <!-- Career Level -->
-                                <label class="form-label mt-2">Career Level:</label><br>
-                                <div class="form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" name="xing_career_level" value="ENTRY_LEVEL.24d1f6"
-                                           {% if "ENTRY_LEVEL.24d1f6" in preferences.xing_career_level %}checked{% endif %}>
-                                    <label class="form-check-label">Entry Level</label>
-                                </div>
-                                <!-- Add other career levels as needed -->
-                            {% elif platform == 'stepstone' %}
-                                <!-- StepStone-specific preferences -->
-                                <!-- Add any StepStone-specific preferences here -->
-                                <!-- For example, remote options, job types, etc. -->
-                                <label class="form-label">Work From Home:</label><br>
-                                <div class="form-check form-check-inline">
-                                    <input type="checkbox" class="form-check-input" name="stepstone_wfh" value="1"
-                                           {% if preferences.stepstone_wfh == '1' %}checked{% endif %}>
-                                    <label class="form-check-label">Yes</label>
-                                </div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary mt-3">Save Preferences</button>
-                    </div>
-                </form>
+    <div class="container py-5">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h1 class="card-title">Home</h1>
             </div>
-        </div>
-
-        <!-- Application History Table -->
-        <div class="card">
             <div class="card-body">
-                <h2 class="card-title text-center text-secondary">Application History</h2>
-                <table class="table table-bordered table-hover mt-3">
-                    <thead class="table-light">
-                        <tr>
-                            <th scope="col">Platform</th>
-                            <th scope="col">Job URL</th>
-                            <th scope="col">Applied At</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for app in applications %}
-                        <tr>
-                            <td>{{ app.platform.capitalize() }}</td>
-                            <td><a href="{{ app.job_url }}" target="_blank">{{ app.job_url }}</a></td>
-                            <td>{{ app.applied_at }}</td>
-                        </tr>
+                <!-- Flash messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }}">{{ message }}</div>
                         {% endfor %}
-                    </tbody>
-                </table>
+                    {% endif %}
+                {% endwith %}
+
+                <!-- Job Preferences -->
+                <h2 class="mb-4">Job Preferences</h2>
+                <div class="mb-4">
+                    <p><strong>Job Title:</strong> {{ preferences.job_title }}</p>
+                    <p><strong>Location:</strong> {{ preferences.location }}</p>
+                    <p><strong>Radius:</strong> {{ preferences.radius }} km</p>
+                    <a href="{{ url_for('preferences') }}" class="btn btn-outline-primary">Change Preferences</a>
+                </div>
+
+                <!-- Login Status -->
+                <h2 class="mb-4">Login Status</h2>
+                <ul class="list-group mb-4">
+                    {% for platform, status in logged_in.items() %}
+                        <li class="list-group-item">
+                            {{ platform.capitalize() }}: 
+                            <span class="badge bg-{{ 'success' if status else 'danger' }}">
+                                {{ "Logged In" if status else "Not Logged In" }}
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <a href="{{ url_for('login_platform') }}" class="btn btn-outline-primary">Login to Platform</a>
+
+                <!-- Automation Controls -->
+                <h2 class="mt-5 mb-4">Automation</h2>
+                {% if automation_running %}
+                    <p class="text-success">Automation is running...</p>
+                    <a href="{{ url_for('stop_automation') }}" class="btn btn-danger">Stop Automation</a>
+                {% else %}
+                    <a href="{{ url_for('start_automation') }}" class="btn btn-success">Start Automation</a>
+                {% endif %}
             </div>
         </div>
     </div>
 
-    <script>
-        function startApplication(platform) {
-            window.location.href = `/apply_jobs/${platform}`;
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
